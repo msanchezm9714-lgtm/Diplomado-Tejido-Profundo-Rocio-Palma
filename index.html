@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tejido Profundo — Diplomado · Rocío Palma</title>
+<style>
+
+@font-face {
+  font-family: 'Avigea';
+  src: url('assets/Avigea.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avigea';
+  src: url('assets/Avigea-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --marfil: #E6F2F4;
+  --marfil-2: #D9ECEF;
+  --carbon: #0D3A4C;
+  --carbon-60: rgba(13,58,76,0.62);
+  --carbon-40: rgba(13,58,76,0.42);
+  --lila: #1D6E82;
+  --arcilla: #056887;
+  --arcilla-dark: #044F67;
+  --piedra: #D6ECEC;
+  --ocre: #5E97A3;
+  --font-serif: 'Avigea', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --maxw: 1180px;
+}
+
+/* This page commits deliberately to one cool editorial palette (light blues and
+   celestes, taken from Rocío's own Tejido Profundo materials) rather than a
+   light/dark pair. Background is painted explicitly so it never inherits a
+   dark host ground. */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  margin: 0;
+  background: var(--marfil);
+  color: var(--carbon);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 48px;
+}
+@media (max-width: 720px) {
+  .container { padding: 0 24px; }
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--arcilla);
+  font-weight: 700;
+}
+
+.rule {
+  width: 64px;
+  height: 1px;
+  background: var(--ocre);
+  opacity: 0.6;
+  border: none;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; }
+
+/* ---------- reveal-on-scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(.2,.7,.3,1), transform 0.8s cubic-bezier(.2,.7,.3,1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ================= NAV ================= */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(230,242,244,0);
+  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+}
+.nav.scrolled {
+  background: rgba(230,242,244,0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(13,58,76,0.08);
+  padding: 14px 48px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  font-weight: 700;
+}
+.nav-brand img { width: 26px; height: 26px; object-fit: contain; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  list-style: none;
+  margin: 0; padding: 0;
+}
+.nav-links a {
+  text-decoration: none;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  color: var(--carbon-60);
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%; bottom: -1px;
+  height: 2px;
+  background: var(--lila);
+  transition: right 0.3s ease;
+}
+.nav-links a:hover { color: var(--carbon); }
+.nav-links a.active { color: var(--carbon); }
+.nav-links a.active::after { right: 0; }
+.nav-cta {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 10px 22px;
+  border: 1px solid var(--carbon);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--carbon); color: var(--marfil); }
+@media (max-width: 860px) {
+  .nav { padding: 16px 22px; }
+  .nav.scrolled { padding: 12px 22px; }
+  .nav-links { display: none; }
+  .nav-cta { padding: 8px 16px; font-size: 12px; }
+}
+
+/* ================= HERO ================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 140px 48px 100px;
+}
+@media (max-width: 720px) {
+  .hero { min-height: 56vh; padding: 110px 24px 64px; }
+}
+.hero-bg {
+  position: absolute; inset: -6% -6%;
+  background-image: url('assets/fondo-marmol.webp');
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+.hero-bg::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(230,242,244,0.1) 0%, rgba(230,242,244,0.5) 78%, var(--marfil) 100%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  width: 100%;
+}
+.hero .eyebrow { margin-bottom: 22px; display: block; }
+.hero h1 {
+  font-size: clamp(46px, 7vw, 92px);
+  line-height: 1.02;
+  color: var(--carbon);
+  max-width: 920px;
+}
+.hero .sub {
+  margin-top: 28px;
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.55;
+  color: var(--carbon-60);
+  max-width: 480px;
+}
+.hero-meta {
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+@media (max-width: 720px) { .hero-meta { margin-top: 32px; } }
+.hero-meta .name {
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+@media (max-width: 420px) {
+  .hero-meta .name { letter-spacing: 0.14em; font-size: 12.5px; }
+}
+.hero-meta .loc {
+  font-size: 14px;
+  color: var(--carbon-60);
+}
+.scroll-cue {
+  position: absolute;
+  bottom: 40px; left: 48px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--carbon-60);
+}
+.scroll-cue svg {
+  width: 16px; height: 16px;
+  animation: cuebounce 1.8s ease-in-out infinite;
+}
+@keyframes cuebounce { 0%,100% { transform: translateY(0); opacity:.6;} 50% { transform: translateY(6px); opacity:1;} }
+@media (prefers-reduced-motion: reduce) { .scroll-cue svg { animation: none; } }
+@media (max-width: 720px) { .scroll-cue { display: none; } }
+
+/* ================= GENERIC SECTION ================= */
+.section {
+  padding: 132px 0;
+  position: relative;
+}
+.section-tight { padding: 96px 0; }
+@media (max-width: 720px) {
+  .section { padding: 60px 0; }
+  .section-tight { padding: 44px 0; }
+}
+
+/* La formación — statement */
+.statement {
+  max-width: 880px;
+}
+.statement .lead {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.32;
+  margin-top: 24px;
+}
+.statement .rule { margin: 48px 0; }
+.statement .body {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--carbon-60);
+  max-width: 620px;
+}
+
+/* Photo break */
+.photo-break {
+  position: relative;
+  height: 78vh;
+  min-height: 460px;
+  overflow: hidden;
+}
+.photo-break img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.02);
+}
+.photo-break::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(13,58,76,0.08), rgba(13,58,76,0.22));
+}
+
+/* Two-col content with image */
+.split {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px;
+  align-items: center;
+}
+.split.rev { grid-template-columns: 0.9fr 1.1fr; }
+.split-text .eyebrow { margin-bottom: 20px; }
+.split-media {
+  border-radius: 4px 120px 4px 120px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+}
+.split-media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.7s cubic-bezier(.2,.7,.3,1);
+}
+.split-media:hover img { transform: scale(1.06); }
+.split-media.cutout {
+  background: linear-gradient(160deg, var(--piedra) 0%, var(--marfil-2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px;
+}
+.split-media.cutout img {
+  width: 100%; height: 100%; object-fit: contain;
+}
+.split-media.cutout:hover img { transform: scale(1.04); }
+
+.topic-card { margin-bottom: 44px; }
+.topic-card:last-child { margin-bottom: 0; }
+.topic-card .num, .split-text > .num {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--arcilla);
+  letter-spacing: 0.08em;
+}
+
+/* Big section title (e.g. "Contenido Temático") */
+.section-title { margin-bottom: 64px; }
+.section-title h2 {
+  font-size: clamp(34px, 4.4vw, 52px);
+  margin-top: 18px;
+  line-height: 1.12;
+}
+.topic-card h3 {
+  font-size: 26px;
+  margin: 12px 0 14px;
+  line-height: 1.25;
+}
+.topic-card p {
+  font-size: 16.5px;
+  line-height: 1.72;
+  color: var(--carbon-60);
+}
+
+@media (max-width: 900px) {
+  .split, .split.rev { grid-template-columns: 1fr; gap: 40px; }
+  .split.rev .split-media { order: 2; }
+  .split-media { aspect-ratio: 16/10; }
+}
+
+/* Wash — celeste profundo */
+.wash {
+  background: linear-gradient(160deg, var(--lila) 0%, #0B4256 100%);
+  color: var(--marfil);
+  padding: 140px 0;
+  text-align: center;
+}
+@media (max-width: 720px) { .wash { padding: 72px 0; } }
+.wash .eyebrow { color: var(--piedra); }
+.wash h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.28;
+  max-width: 760px;
+  margin: 26px auto 0;
+}
+.wash p.body {
+  max-width: 620px;
+  margin: 34px auto 0;
+  font-size: 17px;
+  line-height: 1.8;
+  color: rgba(230,242,244,0.88);
+}
+
+/* Más allá / badge */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 46px;
+  padding: 16px 26px;
+  border: 1px solid var(--ocre);
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+@media (max-width: 560px) {
+  .badge-pill { border-radius: 18px; }
+}
+
+/* Por qué Rocío */
+.about {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 70px;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.92 / 1;
+}
+.about-visual .shape {
+  position: absolute;
+  bottom: 0; left: 10%;
+  width: 80%; height: 90%;
+  background: var(--arcilla);
+  border-radius: 220px 220px 24px 24px;
+}
+.about-visual img {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  height: auto;
+  filter: drop-shadow(0 30px 40px rgba(13,58,76,0.28));
+}
+.about-text h2 { font-size: clamp(30px, 3.4vw, 40px); margin: 18px 0 26px; }
+.about-text p { font-size: 16.5px; line-height: 1.8; color: var(--carbon-60); margin-bottom: 20px; }
+@media (max-width: 900px) {
+  .about { grid-template-columns: 1fr; }
+  .about-visual { order: -1; }
+}
+
+/* Qué incluye */
+.includes-list { border-top: 1px solid var(--piedra); margin-top: 50px; }
+.includes-item {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 26px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--piedra);
+}
+.includes-item .num { font-family: var(--font-serif); font-size: 32px; color: var(--arcilla); }
+.includes-item .t { font-weight: 700; font-size: 17.5px; margin-bottom: 6px; }
+.includes-item .d { font-size: 15.5px; line-height: 1.6; color: var(--carbon-60); max-width: 640px; }
+.footnote { margin-top: 34px; font-size: 13px; font-style: italic; color: var(--carbon-40); }
+
+/* Inversión */
+.pricing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+}
+.price-num {
+  font-family: var(--font-serif);
+  font-size: clamp(60px, 9vw, 100px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.price-label { font-size: 16px; color: var(--carbon-60); margin-top: 6px; }
+.price-sub { margin-top: 18px; font-size: 17px; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 34px;
+}
+.detail-grid .label {
+  font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--arcilla); margin-bottom: 8px;
+}
+.detail-grid .value { font-size: 18px; }
+.detail-grid .value-note {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: var(--carbon-60);
+}
+.promo-box {
+  margin-top: 20px;
+  background: var(--carbon);
+  color: var(--marfil);
+  border-radius: 20px;
+  padding: 32px 36px;
+}
+.promo-box .tag { font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--piedra); margin-bottom: 12px; }
+.promo-box .txt { font-family: var(--font-serif); font-size: 21px; line-height: 1.4; }
+.promo-box .txt b { color: #6FD3E8; font-weight: 400; }
+@media (max-width: 900px) { .pricing { grid-template-columns: 1fr; gap: 40px; } }
+
+/* Reserva / final CTA */
+.finalcta {
+  position: relative;
+  padding: 160px 0;
+  text-align: center;
+  overflow: hidden;
+}
+@media (max-width: 720px) { .finalcta { padding: 88px 0; } }
+.finalcta-bg {
+  position: absolute; inset: -8%;
+  background-image: url('assets/foto-reserva.webp');
+  background-size: cover;
+  background-position: center 30%;
+}
+.finalcta-bg::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(6,36,48,0.6), rgba(6,36,48,0.85));
+}
+.finalcta-inner { position: relative; z-index: 2; color: var(--marfil); }
+.finalcta .eyebrow { color: var(--piedra); }
+.finalcta h2 { font-size: clamp(38px, 6vw, 64px); margin-top: 22px; line-height: 1.12; }
+.finalcta .rule { margin: 36px auto; background: var(--ocre); }
+.finalcta-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 18px 44px;
+  background: var(--marfil);
+  color: var(--carbon);
+  text-decoration: none;
+  border-radius: 999px;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.finalcta-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(0,0,0,0.25); }
+.finalcta .loc { margin-top: 26px; font-size: 14px; color: rgba(230,242,244,0.78); }
+
+/* Closing quote */
+.closing {
+  position: relative;
+  padding: 160px 0 120px;
+  text-align: center;
+  overflow: hidden;
+}
+@media (max-width: 720px) { .closing { padding: 84px 0 72px; } }
+.closing-bg {
+  position: absolute; inset: 0;
+  background-image: url('assets/fondo-marmol.webp');
+  background-size: cover;
+  background-position: center 70%;
+  opacity: 0.9;
+}
+.closing-bg::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(230,242,244,0.2), var(--marfil) 92%);
+}
+.closing-inner { position: relative; z-index: 2; }
+.closing .quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(24px, 3.4vw, 36px);
+  line-height: 1.5;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.closing .quote .mark { color: var(--arcilla); }
+.closing-signoff {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.closing-signoff img { width: 84px; opacity: 0.9; }
+.closing-signoff .name { font-size: 14px; letter-spacing: 0.32em; text-transform: uppercase; }
+
+/* Footer */
+footer {
+  padding: 40px 0 50px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--carbon-40);
+  letter-spacing: 0.03em;
+}
+
+/* Focus visibility */
+a:focus-visible { outline: 2px solid var(--arcilla); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-brand"><img src="assets/logo-mark.webp" alt="">ROCÍO&nbsp;PALMA</div>
+  <ul class="nav-links">
+    <li><a href="#formacion" data-nav>La formación</a></li>
+    <li><a href="#contenido" data-nav>Contenido</a></li>
+    <li><a href="#rocio" data-nav>Rocío Palma</a></li>
+    <li><a href="#inversion" data-nav>Inversión</a></li>
+  </ul>
+  <a class="nav-cta" href="https://wa.me/529848078931?text=Me%20interesa%20inscribirme%20al%20curso%20del%20Diplomado%20de%20Tejido%20Profundo" target="_blank" rel="noopener">Reservar lugar</a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Diplomado</span>
+    <h1>Tejido Profundo</h1>
+    <p class="sub">Especialización terapéutica en masaje profundo: preparación tisular, criterio clínico y sensibilidad manual para liberar tensión donde realmente importa — sin depender de la fuerza.</p>
+    <div class="hero-meta">
+      <span class="name">Rocío Palma</span>
+      <span class="rule" style="width:28px"></span>
+      <span class="loc">Playa del Carmen</span>
+    </div>
+  </div>
+  <div class="scroll-cue">Desplázate<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 2v11M8 13l-4.5-4.5M8 13l4.5-4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+</header>
+
+<section class="section" id="formacion">
+  <div class="container statement reveal">
+    <span class="eyebrow">La formación</span>
+    <p class="lead">La verdadera profundidad no depende de la fuerza — depende del criterio.</p>
+    <hr class="rule">
+    <p class="body">El Diplomado en Tejido Profundo con enfoque terapéutico nace de la necesidad de llevar el masaje profundo hacia una visión más consciente, precisa y verdaderamente terapéutica. Muchos terapeutas asocian esta técnica con aplicar más fuerza o generar dolor intenso: este programa transforma esa percepción, enseñando a preparar los tejidos de forma progresiva y segura antes de acceder a planos más profundos, solo cuando es necesario.</p>
+  </div>
+</section>
+
+<div class="photo-break reveal">
+  <img src="assets/foto-transicion.webp" alt="Grupo de alumnos practicando técnicas de masaje profundo en clase" loading="lazy">
+</div>
+
+<section class="section" id="contenido">
+  <div class="container">
+    <div class="section-title reveal">
+      <span class="eyebrow">Contenido temático</span>
+      <h2>De la teoría a las manos</h2>
+    </div>
+    <div class="split reveal">
+      <div class="split-text">
+        <span class="num">01</span>
+        <div class="topic-card" style="margin-top:14px">
+          <h3>Preparación tisular y criterio terapéutico</h3>
+          <p>El alumno aprenderá a preparar los tejidos de manera progresiva y segura para acceder a planos más profundos únicamente cuando sea necesario, evitando maniobras invasivas, desgaste físico innecesario y respuestas defensivas del cuerpo.</p>
+        </div>
+      </div>
+      <div class="split-media cutout"><img src="assets/tema-manos-cuello.webp" alt="Técnica de liberación en cuello y hombro" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="wash reveal">
+  <div class="container">
+    <span class="eyebrow">02 — Abordajes por zona</span>
+    <h2>Cervicalgias, dorsalgias, lumbalgias y tensión en piernas</h2>
+    <p class="body">El eje principal de esta formación son los abordajes terapéuticos aplicados a diferentes tensiones y restricciones del cuerpo: cervicalgias, dorsalgias, lumbalgias, tensión en piernas, zonas plantares, entre otras alteraciones musculares y miofasciales.</p>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="container">
+    <div class="split rev reveal">
+      <div class="split-media cutout"><img src="assets/tema-puntos-gatillo.webp" alt="Diagrama de puntos de tensión y dolor referido" loading="lazy"></div>
+      <div class="split-text">
+        <span class="num">03</span>
+        <div class="topic-card" style="margin-top:14px">
+          <h3>Bandas de tensión y puntos gatillo</h3>
+          <p>Se enseñará a identificar y trabajar bandas de tensión, puntos gatillo, adherencias y restricciones miofasciales, comprendiendo cómo abordarlas y liberarlas mediante técnicas estructuradas de liberación miofascial sensitiva y terapia manual aplicada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wash reveal">
+  <div class="container">
+    <span class="eyebrow">04 — Fundamentos integrados</span>
+    <h2>Anatomía, biomecánica y sensibilidad terapéutica</h2>
+    <p class="body">El programa integra conocimientos de anatomía, lectura tisular, biomecánica, ergonomía y sensibilidad terapéutica, permitiendo desarrollar tratamientos más conscientes, efectivos y personalizados dentro del entorno wellness spa y del masaje terapéutico contemporáneo.</p>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="container statement reveal">
+    <span class="eyebrow">Más allá de la técnica</span>
+    <h2 style="font-size:clamp(28px,3.6vw,42px); margin-top:20px; line-height:1.28; max-width:780px;">Una formación que construye criterio, no solo técnica</h2>
+    <p class="body" style="margin-top:30px;">Este programa va más allá de enseñar técnicas manuales: forma terapeutas con criterio, conciencia y una comprensión profunda del cuerpo y el bienestar, integrando ciencia, sensibilidad terapéutica, experiencia real y tradición holística en cada sesión.</p>
+    <div class="badge-pill">220 horas totales de formación — 120 en aula + 100 de práctica supervisada, con Diploma y Carnet expedidos por el Instituto Rocío Palma</div>
+  </div>
+</section>
+
+<section class="section" id="rocio">
+  <div class="container">
+    <div class="about reveal">
+      <div class="about-visual">
+        <div class="shape"></div>
+        <img src="assets/retrato-rocio.webp" alt="Retrato de Rocío Palma">
+      </div>
+      <div class="about-text">
+        <span class="eyebrow">Por qué elegir a</span>
+        <h2>Rocío Palma</h2>
+        <p>Elegir formarse con Rocío Palma significa aprender de una de las pioneras en la profesionalización del wellness y el masaje terapéutico en México. Con más de 30 años de experiencia, ha participado en importantes proyectos de capacitación para spas y hoteles de lujo, formando terapeutas desde una visión más humana, consciente y profesional del bienestar.</p>
+        <p>Su enfoque integra ciencia, sensibilidad terapéutica, experiencia real y tradición holística, creando programas que van más allá de enseñar técnicas manuales. Rocío Palma forma terapeutas con criterio, conciencia y una comprensión profunda del cuerpo y el bienestar, convirtiendo cada formación en una experiencia verdaderamente transformadora.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight" id="incluye">
+  <div class="container reveal">
+    <span class="eyebrow">Qué incluye</span>
+    <h2 style="font-size:clamp(28px,3.6vw,40px); margin-top:20px;">Tu formación incluye</h2>
+    <div class="includes-list">
+      <div class="includes-item">
+        <div class="num">01</div>
+        <div><div class="t">120 horas de formación distribuidas en 6 meses</div></div>
+      </div>
+      <div class="includes-item">
+        <div class="num">02</div>
+        <div><div class="t">Diploma expedido por el Instituto Rocío Palma</div></div>
+      </div>
+      <div class="includes-item">
+        <div class="num">03</div>
+        <div><div class="t">Carnet con asignaturas expedido por el Instituto Rocío Palma</div></div>
+      </div>
+      <div class="includes-item">
+        <div class="num">04</div>
+        <div><div class="t">Acompañamiento y asesoría durante las prácticas fuera del aula</div></div>
+      </div>
+      <div class="includes-item">
+        <div class="num">05</div>
+        <div><div class="t">100 horas de práctica reconocidas — 220 horas de formación en total</div></div>
+      </div>
+    </div>
+    <p class="footnote">Las constancias SEP tienen un costo adicional, en caso de ser requeridas.</p>
+  </div>
+</section>
+
+<section class="section" id="inversion">
+  <div class="container">
+    <div class="pricing reveal">
+      <div>
+        <span class="eyebrow">Inversión y fecha</span>
+        <div class="price-num" style="margin-top:20px;">$2,800</div>
+        <div class="price-label">MXN mensuales</div>
+        <div class="price-sub">Inscripción: $1,000 MXN</div>
+        <div class="promo-box">
+          <div class="tag">Cupos limitados</div>
+          <div class="txt">Los primeros 10 inscritos obtienen <b>$500 MXN de descuento mensual</b><br>De $2,800 → $2,300 MXN mensuales</div>
+        </div>
+      </div>
+      <div class="detail-grid" style="align-content:start; margin-top:44px;">
+        <div><div class="label">Fecha de inicio</div><div class="value">Viernes 5 de febrero de 2027</div></div>
+        <div><div class="label">Horario</div><div class="value">9:00 a 2:00 PM</div><div class="value-note">Curso los viernes — un solo día a la semana</div></div>
+        <div><div class="label">Duración</div><div class="value">6 meses</div></div>
+        <div><div class="label">Ubicación</div><div class="value">Playa del Carmen</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="finalcta" id="reserva">
+  <div class="finalcta-bg"></div>
+  <div class="finalcta-inner container reveal">
+    <span class="eyebrow">Cupos limitados</span>
+    <h2>Reserva tu lugar ahora</h2>
+    <hr class="rule">
+    <a class="finalcta-btn" href="https://wa.me/529848078931?text=Me%20interesa%20inscribirme%20al%20curso%20del%20Diplomado%20de%20Tejido%20Profundo" target="_blank" rel="noopener">Reservar por WhatsApp</a>
+    <p class="loc">Tejido Profundo — Playa del Carmen</p>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="closing-bg"></div>
+  <div class="closing-inner container reveal">
+    <p class="quote"><span class="mark">“</span>Cuando el conocimiento se une con la sensibilidad y la conciencia terapéutica, el masaje deja de ser una técnica… y se convierte en una verdadera herramienta de transformación humana<span class="mark">”</span></p>
+    <div class="closing-signoff">
+      <img src="assets/logo-mark.webp" alt="Rocío Palma">
+    </div>
+  </div>
+</section>
+
+<footer>Diplomado en Tejido Profundo — Rocío Palma · Playa del Carmen</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var nav = document.getElementById('nav');
+  var heroBg = document.getElementById('heroBg');
+  var ticking = false;
+  function onScrollFrame(){
+    var y = window.scrollY;
+    if (y > 40) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+    if (!reduced && heroBg && y < window.innerHeight) {
+      heroBg.style.transform = 'translateY(' + (y * 0.18) + 'px)';
+    }
+    ticking = false;
+  }
+  document.addEventListener('scroll', function(){
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(onScrollFrame);
+    }
+  }, { passive: true });
+  onScrollFrame();
+
+  function smoothScrollTo(targetY, duration){
+    var startY = window.scrollY, dist = targetY - startY, start = null;
+    function step(ts){
+      if (!start) start = ts;
+      var p = Math.min(1, (ts - start) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      window.scrollTo(0, startY + dist * eased);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      var y = target.getBoundingClientRect().top + window.scrollY - 84;
+      if (reduced) window.scrollTo(0, y);
+      else smoothScrollTo(y, 700);
+    });
+  });
+
+  var items = document.querySelectorAll('.reveal');
+  function revealNow(el){ el.classList.add('in'); }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          revealNow(e.target);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        revealNow(el);
+      } else {
+        io.observe(el);
+      }
+    });
+  } else {
+    items.forEach(revealNow);
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(function(){ items.forEach(revealNow); }, 2500);
+  });
+  setTimeout(function(){ items.forEach(revealNow); }, 4000);
+
+  var sections = ['formacion','contenido','rocio','inversion'].map(function(id){
+    return document.getElementById(id);
+  }).filter(Boolean);
+  var navLinks = document.querySelectorAll('[data-nav]');
+  if ('IntersectionObserver' in window && sections.length) {
+    var navIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          navLinks.forEach(function(a){
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0, rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function(s){ navIo.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
